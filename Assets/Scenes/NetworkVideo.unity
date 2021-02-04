@@ -294,18 +294,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3586564847929791076 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6298102813256886944, guid: 8ffcea1202026fd47a54413218fcc4cc,
-    type: 3}
-  m_PrefabInstance: {fileID: 7395282883487905988}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7395282883487905989}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50148b44dff866c48bd5ac911dc79269, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &7395282883487905988
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -373,39 +361,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7395282884084759639, guid: 8ffcea1202026fd47a54413218fcc4cc,
+    - target: {fileID: 7395282883487905990, guid: 8ffcea1202026fd47a54413218fcc4cc,
         type: 3}
-      propertyPath: networkVidPlayer
-      value: 
-      objectReference: {fileID: 3586564847929791076}
+      propertyPath: viewIdField
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8ffcea1202026fd47a54413218fcc4cc, type: 3}
---- !u!1 &7395282883487905989 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 441255499279667091, guid: 8ffcea1202026fd47a54413218fcc4cc,
-    type: 3}
-  m_PrefabInstance: {fileID: 7395282883487905988}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &7395282883487905990
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7395282883487905989}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  observableSearch: 0
-  Synchronization: 3
-  OwnershipTransfer: 0
-  ObservedComponents:
-  - {fileID: 3586564847929791076}
-  viewIdField: 1
-  InstantiationId: 0
-  isRuntimeInstantiated: 0

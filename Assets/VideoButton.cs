@@ -20,8 +20,8 @@ public class VideoButton : MonoBehaviourPunCallbacks
     private void OnMouseDown()
     {
         //if (!photonView.IsMine)
-          //  return;
-
+        //  return;
+        Debug.Log("on mouse down");
         networkVidPlayer.PlayOrPause();
     }
 }

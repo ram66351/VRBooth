@@ -35,7 +35,7 @@ namespace Photon.Pun.Demo.PunBasics
 
 		[Tooltip("The maximum number of players per room")]
 		[SerializeField]
-		private byte maxPlayersPerRoom = 4;
+		private byte maxPlayersPerRoom = 20;
 
 		[Tooltip("The UI Loader Anime")]
 		[SerializeField]
@@ -211,13 +211,15 @@ namespace Photon.Pun.Demo.PunBasics
 			// #Critical: We only load if we are the first player, else we rely on  PhotonNetwork.AutomaticallySyncScene to sync our instance scene.
 			if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
 			{
-				Debug.Log("We load the 'Room for 1' ");
+				//Debug.Log("We load the 'Room for 1' ");
 
-				// #Critical
-				// Load the Room Level. 
-				PhotonNetwork.LoadLevel("PunBasics-Room for 1");
+                // #Critical
+                // Load the Room Level. 
+                //PhotonNetwork.LoadLevel("PunBasics-Room for 1");
+                Debug.Log("Loading scene Virtual booth");
+                PhotonNetwork.LoadLevel("VirtualBooth");
 
-			}
+            }
 		}
 
 		#endregion

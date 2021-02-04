@@ -349,15 +349,15 @@ public class ChatGui : MonoBehaviour, IChatClientListener
 	{
 		if (level == ExitGames.Client.Photon.DebugLevel.ERROR)
 		{
-			Debug.LogError(message);
+			//Debug.LogError(message);
 		}
 		else if (level == ExitGames.Client.Photon.DebugLevel.WARNING)
 		{
-			Debug.LogWarning(message);
+			//Debug.LogWarning(message);
 		}
 		else
 		{
-			Debug.Log(message);
+			//Debug.Log(message);
 		}
 	}
 
@@ -426,7 +426,7 @@ public class ChatGui : MonoBehaviour, IChatClientListener
 			}
 		}
 
-		Debug.Log("OnSubscribed: " + string.Join(", ", channels));
+		//Debug.Log("OnSubscribed: " + string.Join(", ", channels));
 
 		/*
         // select first subscribed channel in alphabetical order
@@ -627,7 +627,7 @@ public class ChatGui : MonoBehaviour, IChatClientListener
 
 		this.selectedChannelName = channelName;
 		this.CurrentChannelText.text = channel.ToStringMessages();
-		Debug.Log("ShowChannel: " + this.selectedChannelName);
+		//Debug.Log("ShowChannel: " + this.selectedChannelName);
 
 		foreach (KeyValuePair<string, Toggle> pair in this.channelToggles)
 		{

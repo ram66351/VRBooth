@@ -77,7 +77,6 @@ GameObject:
   - component: {fileID: 441255499248945515}
   - component: {fileID: 441255499248945514}
   - component: {fileID: 441255499248945517}
-  - component: {fileID: 441255499248945513}
   - component: {fileID: 6298102813492153629}
   m_Layer: 0
   m_Name: Screen
@@ -160,24 +159,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 14
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &441255499248945513
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 441255499248945516}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8da19ade04d43ba4b833a0f219df9bbc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  vPlayer: {fileID: 441255497689590473}
-  Toggle: 0
-  isPlay: 1
-  PlayPauseButton: {fileID: 0}
-  playIco: {fileID: 21300000, guid: 3bb3dd8d6b4ed4940815e03e8c454e24, type: 3}
-  pauseIco: {fileID: 21300000, guid: 33ea50c0038a3784bb1ee40267421b9f, type: 3}
 --- !u!82 &6298102813492153629
 AudioSource:
   m_ObjectHideFlags: 0
@@ -284,6 +265,7 @@ GameObject:
   m_Component:
   - component: {fileID: 441255499279667088}
   - component: {fileID: 6298102813256886944}
+  - component: {fileID: 7395282883487905990}
   m_Layer: 0
   m_Name: NetworkVideo 1
   m_TagString: Untagged
@@ -326,6 +308,32 @@ MonoBehaviour:
   PlayPauseButton: {fileID: 7395282884084759637}
   playIco: {fileID: 2800000, guid: 3bb3dd8d6b4ed4940815e03e8c454e24, type: 3}
   pauseIco: {fileID: 2800000, guid: 33ea50c0038a3784bb1ee40267421b9f, type: 3}
+  isInitialized: 0
+  videoStatus: 
+  videoID: TestVideo 1
+--- !u!114 &7395282883487905990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 441255499279667091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  observableSearch: 0
+  Synchronization: 3
+  OwnershipTransfer: 1
+  ObservedComponents:
+  - {fileID: 6298102813256886944}
+  viewIdField: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &7395282884084759637
 GameObject:
   m_ObjectHideFlags: 0
@@ -385,7 +393,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 4186ecd8d809c294fa9dcb1b160c4375, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

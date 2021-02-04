@@ -4,7 +4,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof (ChatGui))]
 public class NamePickGui : MonoBehaviour
 {
-    private const string UserNamePlayerPref = "NamePickUserName";
+    private const string UserNamePlayerPref = "PlayerName";
 
     public ChatGui chatNewComponent;
 
