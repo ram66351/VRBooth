@@ -2098,6 +2098,11 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 11476684, guid: b7fe671fa5d4d4772a4b20715fb9b0ff, type: 3}
+      propertyPath: playerPrefab
+      value: 
+      objectReference: {fileID: 9130661151559929846, guid: fc237f08c896853499d3aeb389790b63,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b7fe671fa5d4d4772a4b20715fb9b0ff, type: 3}
 --- !u!1 &562867246
@@ -4559,6 +4564,11 @@ PrefabInstance:
         type: 3}
       propertyPath: viewIdField
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6298102813256886944, guid: 8ffcea1202026fd47a54413218fcc4cc,
+        type: 3}
+      propertyPath: isBigscreen
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8ffcea1202026fd47a54413218fcc4cc, type: 3}

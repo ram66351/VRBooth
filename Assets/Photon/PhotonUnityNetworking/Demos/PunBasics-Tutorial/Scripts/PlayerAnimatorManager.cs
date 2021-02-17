@@ -70,8 +70,10 @@ namespace Photon.Pun.Demo.PunBasics
                 v = 0;
             }
 
-			// set the Animator Parameters
+            // set the Animator Parameters
+            
             animator.SetFloat( "Speed", h*h+v*v );
+
             animator.SetFloat( "Direction", h, directionDampTime, Time.deltaTime );
 	    }
 

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Video;
 using UnityEngine.UI;
 using Photon.Pun;
+using Photon.Realtime;
 
 public class NetworkVideoPlayer : MonoBehaviourPunCallbacks,IPunObservable
 {
@@ -14,6 +15,7 @@ public class NetworkVideoPlayer : MonoBehaviourPunCallbacks,IPunObservable
     public GameObject PlayPauseButton;
     public Texture2D playIco;
     public Texture2D pauseIco;
+    public GameObject playerPrefabObject;
 
     private AudioSource audioSource;
     private Material PlayButtonMat;
@@ -24,6 +26,10 @@ public class NetworkVideoPlayer : MonoBehaviourPunCallbacks,IPunObservable
     public string videoStatus;
 
     public string videoID;
+    public bool isBigscreen;
+
+    public float distance;
+    public float maxDistance = 10;
 
     void Start()
     {
@@ -47,6 +53,16 @@ public class NetworkVideoPlayer : MonoBehaviourPunCallbacks,IPunObservable
             vPlayer.controlledAudioTrackCount = 1;
             PlayButtonMat = PlayPauseButton.GetComponent<Renderer>().material;
             isInitialized = true;
+
+        //for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+        //{
+        //    if (PhotonNetwork.PlayerList[i].IsLocal)
+        //    {
+        //        player = PhotonNetwork.PlayerList[i];
+        //    }
+        //}
+
+        
     }
 
     // Update is called once per frame
@@ -58,8 +74,19 @@ public class NetworkVideoPlayer : MonoBehaviourPunCallbacks,IPunObservable
         if (isPlay)
         {
             vPlayer.Play();
-
             PlayButtonMat.mainTexture = pauseIco;
+
+            if(playerPrefabObject != null && !isBigscreen)
+            {
+                distance = Vector3.Distance(transform.position, playerPrefabObject.transform.position);
+                if (distance > maxDistance)
+                    vPlayer.SetDirectAudioVolume(0, 0);
+                else
+                {
+                    var vol = ExtensionMethods.Remap(distance, 0, maxDistance, 1, 0);
+                    vPlayer.SetDirectAudioVolume(0, vol);
+                }
+            }       
         }
         else
         {
@@ -98,6 +125,19 @@ public class NetworkVideoPlayer : MonoBehaviourPunCallbacks,IPunObservable
                 { videoID, "pause" }
             };
             PhotonNetwork.CurrentRoom.SetCustomProperties(roomProps);
+        }
+
+        var photonViews = UnityEngine.Object.FindObjectsOfType<PhotonView>();
+        foreach (var view in photonViews)
+        {
+            //var player = view.owner;
+            //Objects in the scene don't have an owner, its means view.owner will be null
+            if (view.IsMine)
+            {
+                if (view.gameObject.tag == "Player")
+                    playerPrefabObject = view.gameObject;
+                //do works...
+            }
         }
     }
 
