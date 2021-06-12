@@ -20,14 +20,16 @@ namespace Photon.Pun.Demo.PunBasics
 	    private float directionDampTime = 0.25f;
         Animator animator;
 
-		#endregion
+        #endregion
 
-		#region MonoBehaviour CallBacks
+        #region MonoBehaviour CallBacks
 
-		/// <summary>
-		/// MonoBehaviour method called on GameObject by Unity during initialization phase.
-		/// </summary>
-	    void Start () 
+        public float reverse;
+
+        /// <summary>
+        /// MonoBehaviour method called on GameObject by Unity during initialization phase.
+        /// </summary>
+        void Start () 
 	    {
 	        animator = GetComponent<Animator>();
 	    }
@@ -64,16 +66,13 @@ namespace Photon.Pun.Demo.PunBasics
             float h = Input.GetAxis("Horizontal");
             float v = Input.GetAxis("Vertical");
 
-			// prevent negative Speed.
-            if( v < 0 )
+            // prevent negative Speed.
+            if (v < 0)
             {
                 v = 0;
             }
 
-            // set the Animator Parameters
-            
-            animator.SetFloat( "Speed", h*h+v*v );
-
+            animator.SetFloat( "Speed", h*h + v*v);
             animator.SetFloat( "Direction", h, directionDampTime, Time.deltaTime );
 	    }
 

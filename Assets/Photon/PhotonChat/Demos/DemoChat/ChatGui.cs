@@ -6,10 +6,12 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 using Photon.Chat;
 using Photon.Realtime;
@@ -64,9 +66,9 @@ public class ChatGui : MonoBehaviour, IChatClientListener
 	public InputField InputFieldChat;   // set in inspector
 	public Text CurrentChannelText;     // set in inspector
 	public Toggle ChannelToggleToInstantiate; // set in inspector
+    //public ToggleGroup channelToggleGroup;
 
-
-	public GameObject FriendListUiItemtoInstantiate;
+    public GameObject FriendListUiItemtoInstantiate;
 
 	private readonly Dictionary<string, Toggle> channelToggles = new Dictionary<string, Toggle>();
 
@@ -76,6 +78,7 @@ public class ChatGui : MonoBehaviour, IChatClientListener
 	public GameObject Title;
 	public Text StateText; // set in inspector
 	public Text UserIdText; // set in inspector
+    public Transform FriendsListPanel;
 
 	// private static string WelcomeText = "Welcome to chat. Type \\help to list commands.";
 	private static string HelpText = "\n    -- HELP --\n" +
@@ -119,7 +122,7 @@ public class ChatGui : MonoBehaviour, IChatClientListener
 	    this.StateText.text  = "";
 	    this.StateText.gameObject.SetActive(true);
 	    this.UserIdText.gameObject.SetActive(true);
-	    this.Title.SetActive(true);
+	    this.Title.SetActive(false);
 	    this.ChatPanel.gameObject.SetActive(false);
 	    this.ConnectingLabel.SetActive(false);
 
@@ -374,7 +377,9 @@ public class ChatGui : MonoBehaviour, IChatClientListener
 
 		this.ChatPanel.gameObject.SetActive(true);
 
-		if (this.FriendsList!=null  && this.FriendsList.Length>0)
+       
+
+        if (this.FriendsList!=null  && this.FriendsList.Length>0)
 		{
 			this.chatClient.AddFriends(this.FriendsList); // Add some users to the server-list to get their status updates
 
@@ -425,10 +430,12 @@ public class ChatGui : MonoBehaviour, IChatClientListener
 
 			}
 		}
+         
+        
 
-		//Debug.Log("OnSubscribed: " + string.Join(", ", channels));
+        //Debug.Log("OnSubscribed: " + string.Join(", ", channels));
 
-		/*
+        /*
         // select first subscribed channel in alphabetical order
         if (this.chatClient.PublicChannels.Count > 0)
         {
@@ -448,8 +455,10 @@ public class ChatGui : MonoBehaviour, IChatClientListener
         }
         */
 
-		// Switch to the first newly created channel
-	    this.ShowChannel(channels[0]);
+        // Switch to the first newly created channel
+        this.ShowChannel(channels[0]);
+
+        StartCoroutine(ShowOnlyOneChannel(1));
 	}
 
     /// <inheritdoc />
@@ -471,6 +480,8 @@ public class ChatGui : MonoBehaviour, IChatClientListener
 		cbtn.GetComponentInChildren<ChannelSelector>().SetChannel(channelName);
 		cbtn.transform.SetParent(this.ChannelToggleToInstantiate.transform.parent, false);
 
+        Debug.Log(channelName);
+
 		this.channelToggles.Add(channelName, cbtn);
 	}
 
@@ -482,7 +493,7 @@ public class ChatGui : MonoBehaviour, IChatClientListener
 
 		_friendItem.FriendId = friendId;
 
-		fbtn.transform.SetParent(this.FriendListUiItemtoInstantiate.transform.parent, false);
+		fbtn.transform.SetParent(this.FriendsListPanel, false);
 
 		this.friendListItemLUT[friendId] = _friendItem;
 	}
@@ -640,7 +651,49 @@ public class ChatGui : MonoBehaviour, IChatClientListener
 		Application.OpenURL("https://dashboard.photonengine.com");
 	}
 
+    public void EnableDisableChannel(string ChannelName)
+    {
+        Toggle selectedToggle = null;
+        foreach(var toggle in channelToggles)
+        {
+            if(toggle.Key != ChannelName)
+            {
+                toggle.Value.gameObject.SetActive(false);
+            }
+            else
+            {
+                toggle.Value.gameObject.SetActive(true);
+                selectedToggle = toggle.Value;
+                toggle.Value.isOn = true;
+                this.ShowChannel(toggle.Key);
+            }
+        }
+        channelToggles.ElementAt(0).Value.gameObject.SetActive(true);
+        selectedToggle.isOn = true;
+    }
 
+    public void EnablePublicChannel()
+    {
+        channelToggles.ElementAt(0).Value.gameObject.SetActive(true);
+        channelToggles.ElementAt(0).Value.isOn = true;
+        this.ShowChannel(channelToggles.ElementAt(0).Key);
+    }
 
-
+    IEnumerator ShowOnlyOneChannel(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        for (int i = 0; i < channelToggles.Count; i++)
+        {
+            if (i != 0)
+            {
+                channelToggles.ElementAt(i).Value.gameObject.SetActive(false);
+            }
+            else
+            {
+                //channelToggles.ElementAt(i).Value.isOn = true;
+                //this.ShowChannel(channelToggles.ElementAt(0).Key);
+                EnablePublicChannel();
+            }
+        }
+    }
 }

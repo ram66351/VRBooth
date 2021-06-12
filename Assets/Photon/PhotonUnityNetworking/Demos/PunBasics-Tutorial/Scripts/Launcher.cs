@@ -56,6 +56,11 @@ namespace Photon.Pun.Demo.PunBasics
 		/// </summary>
 		string gameVersion = "1";
 
+        public Toggle maleToggle;
+        public Toggle femaleToggle;
+        public GameObject maleSpotlight;
+        public GameObject femaleSpotlight;
+
 		#endregion
 
 		#region MonoBehaviour CallBacks
@@ -75,8 +80,28 @@ namespace Photon.Pun.Demo.PunBasics
 			PhotonNetwork.AutomaticallySyncScene = true;
 
 		}
+        void Start()
+        {
+            string sex = PlayerPrefs.GetString("sex");
 
-		#endregion
+            if (sex == "female")
+            {
+                femaleToggle.isOn = true;
+                maleToggle.isOn = false;
+                femaleSpotlight.SetActive(true);
+                maleSpotlight.SetActive(false);
+            }
+            else
+            {
+                maleToggle.isOn = true;
+                femaleToggle.isOn = false;
+                femaleSpotlight.SetActive(false);
+                maleSpotlight.SetActive(true);
+            }
+        }
+        #endregion
+
+        public GameObject LoginScreen;
 
 
 		#region Public Methods
@@ -133,6 +158,28 @@ namespace Photon.Pun.Demo.PunBasics
 			// add new messages as a new line and at the bottom of the log.
 			feedbackText.text += System.Environment.NewLine+message;
 		}
+
+        public void OnMaleSelected(bool isOn)
+        {
+            if(isOn)
+            {
+                PlayerPrefs.SetString("sex", "male");
+                PlayerPrefs.Save();
+                femaleSpotlight.SetActive(false);
+                maleSpotlight.SetActive(true);
+            }
+        }
+
+        public void OnFemaleSelected(bool isOn)
+        {
+            if (isOn)
+            {
+                PlayerPrefs.SetString("sex", "female");
+                PlayerPrefs.Save();
+                femaleSpotlight.SetActive(true);
+                maleSpotlight.SetActive(false);
+            }
+        }
 
         #endregion
 
@@ -217,7 +264,8 @@ namespace Photon.Pun.Demo.PunBasics
                 // Load the Room Level. 
                 //PhotonNetwork.LoadLevel("PunBasics-Room for 1");
                 Debug.Log("Loading scene Virtual booth");
-                PhotonNetwork.LoadLevel("VirtualBooth");
+                LoginScreen.SetActive(false);
+                PhotonNetwork.LoadLevel("VirtualBooth_OfficeInterior 1");
 
             }
 		}

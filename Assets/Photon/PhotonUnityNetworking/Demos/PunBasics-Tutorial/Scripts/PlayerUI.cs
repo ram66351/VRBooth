@@ -37,7 +37,7 @@ namespace Photon.Pun.Demo.PunBasics
 
         PlayerManager target;
 
-		float characterControllerHeight;
+		public float characterControllerHeight = 1.8f;
 
 		Transform targetTransform;
 
@@ -59,7 +59,7 @@ namespace Photon.Pun.Demo.PunBasics
 
 			_canvasGroup = this.GetComponent<CanvasGroup>();
 			
-			this.transform.SetParent(GameObject.Find("Canvas").GetComponent<Transform>(), false);
+			this.transform.SetParent(GameObject.Find("CanvasHUD").GetComponent<Transform>(), false);
 		}
 
 		/// <summary>
@@ -130,12 +130,16 @@ namespace Photon.Pun.Demo.PunBasics
 
 
             CharacterController _characterController = this.target.GetComponent<CharacterController> ();
-
-			// Get data from the Player that won't change during the lifetime of this Component
-			if (_characterController != null){
+            CapsuleCollider _capsuleCollider = this.target.GetComponent<CapsuleCollider>();
+            // Get data from the Player that won't change during the lifetime of this Component
+            if (_characterController != null){
 				characterControllerHeight = _characterController.height;
 			}
-
+            else if(_capsuleCollider != null)
+            {
+                characterControllerHeight = _capsuleCollider.height + 0.2f;
+            }
+ 
 			if (playerNameText != null) {
                 playerNameText.text = this.target.photonView.Owner.NickName;
 			}

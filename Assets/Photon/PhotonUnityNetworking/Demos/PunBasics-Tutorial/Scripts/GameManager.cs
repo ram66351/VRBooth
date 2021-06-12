@@ -29,16 +29,16 @@ namespace Photon.Pun.Demo.PunBasics
 		#region Public Fields
 
 		static public GameManager Instance;
+        public GameObject LocalPlayer;
+        #endregion
 
-		#endregion
+        #region Private Fields
 
-		#region Private Fields
-
-		private GameObject instance;
+        private GameObject instance;
 
         [Tooltip("The prefab to use for representing the player")]
         [SerializeField]
-        private GameObject playerPrefab;
+        private GameObject[] playerPrefab = new GameObject[2];
 
         #endregion
 
@@ -59,7 +59,14 @@ namespace Photon.Pun.Demo.PunBasics
 				return;
 			}
 
-			if (playerPrefab == null) { // #Tip Never assume public properties of Components are filled up properly, always check and inform the developer of it.
+            string sex = PlayerPrefs.GetString("sex");
+            int sexIndex = 0;
+
+            if (sex == "female")
+                sexIndex = 1;
+
+
+            if (playerPrefab == null) { // #Tip Never assume public properties of Components are filled up properly, always check and inform the developer of it.
 
 				Debug.LogError("<Color=Red><b>Missing</b></Color> playerPrefab Reference. Please set it up in GameObject 'Game Manager'", this);
 			} else {
@@ -70,7 +77,7 @@ namespace Photon.Pun.Demo.PunBasics
 				    Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
 
 					// we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-					PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f,5f,0f), Quaternion.identity, 0);
+					PhotonNetwork.Instantiate(this.playerPrefab[sexIndex].name, new Vector3(-10f,0f,0f), Quaternion.identity, 0);
 				}else{
 
 					Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
@@ -97,10 +104,12 @@ namespace Photon.Pun.Demo.PunBasics
 
         #region Photon Callbacks
 
+       
         /// <summary>
         /// Called when a Photon Player got connected. We need to then load a bigger scene.
         /// </summary>
         /// <param name="other">Other.</param>
+        /// 
         public override void OnPlayerEnteredRoom( Player other  )
 		{
 			Debug.Log( "OnPlayerEnteredRoom() " + other.NickName); // not seen if you're the player connecting
@@ -109,7 +118,7 @@ namespace Photon.Pun.Demo.PunBasics
 			{
 				Debug.LogFormat( "OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient ); // called before OnPlayerLeftRoom
 
-				LoadArena();
+				//LoadArena();
 			}
 		}
 
@@ -125,7 +134,7 @@ namespace Photon.Pun.Demo.PunBasics
 			{
 				Debug.LogFormat( "OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient ); // called before OnPlayerLeftRoom
 
-				LoadArena(); 
+				//LoadArena(); 
 			}
 		}
 
@@ -134,7 +143,16 @@ namespace Photon.Pun.Demo.PunBasics
 		/// </summary>
 		public override void OnLeftRoom()
 		{
-			SceneManager.LoadScene("Launcher");
+            if (isMultiroom)
+            {
+                Debug.Log("Multiroom switching");
+                PhotonNetwork.LoadLevel("VirtualBooth3");
+
+            }
+            else
+            {
+                SceneManager.LoadScene("Launcher");
+            }
 		}
 
 		#endregion
@@ -151,11 +169,20 @@ namespace Photon.Pun.Demo.PunBasics
 			Application.Quit();
 		}
 
-		#endregion
+        bool isMultiroom = false;
+        public void LoadScene(string sceneName)
+        {
+            isMultiroom = true;
+            PhotonNetwork.LeaveRoom();
+            PhotonNetwork.JoinRoom("InfintiyHallEastWing");
+            //PhotonNetwork.LoadLevel(sceneName);
+        }
 
-		#region Private Methods
+        #endregion
 
-		void LoadArena()
+        #region Private Methods
+
+        void LoadArena()
 		{
 			if ( ! PhotonNetwork.IsMasterClient )
 			{

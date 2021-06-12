@@ -17,7 +17,7 @@ public class NetworkVideoPlayer : MonoBehaviourPunCallbacks,IPunObservable
     public Texture2D pauseIco;
     public GameObject playerPrefabObject;
 
-    private AudioSource audioSource;
+    public AudioSource audioSource;
     private Material PlayButtonMat;
     private PhotonView PV;
 
@@ -47,7 +47,7 @@ public class NetworkVideoPlayer : MonoBehaviourPunCallbacks,IPunObservable
 
         PV = GetComponent<PhotonView>();
         vPlayer.url = url; 
-            audioSource = GetComponent<AudioSource>();
+            //audioSource = GetComponent<AudioSource>();
             vPlayer.SetTargetAudioSource(0, audioSource);
             vPlayer.EnableAudioTrack(0, true);
             vPlayer.controlledAudioTrackCount = 1;
@@ -76,17 +76,17 @@ public class NetworkVideoPlayer : MonoBehaviourPunCallbacks,IPunObservable
             vPlayer.Play();
             PlayButtonMat.mainTexture = pauseIco;
 
-            if(playerPrefabObject != null && !isBigscreen)
-            {
-                distance = Vector3.Distance(transform.position, playerPrefabObject.transform.position);
-                if (distance > maxDistance)
-                    vPlayer.SetDirectAudioVolume(0, 0);
-                else
-                {
-                    var vol = ExtensionMethods.Remap(distance, 0, maxDistance, 1, 0);
-                    vPlayer.SetDirectAudioVolume(0, vol);
-                }
-            }       
+            //if(playerPrefabObject != null && !isBigscreen)
+            //{
+            //    distance = Vector3.Distance(transform.position, playerPrefabObject.transform.position);
+            //    if (distance > maxDistance)
+            //        vPlayer.SetDirectAudioVolume(0, 0);
+            //    else
+            //    {
+            //        var vol = ExtensionMethods.Remap(distance, 0, maxDistance, 1, 0);
+            //        vPlayer.SetDirectAudioVolume(0, vol);
+            //    }
+            //}       
         }
         else
         {
@@ -158,7 +158,7 @@ public class NetworkVideoPlayer : MonoBehaviourPunCallbacks,IPunObservable
         if (!isInitialized)
             return;
 
-        Debug.Log("OnPhotonSerializeView Called");Debug.Log("OnPhotonSerializeView Called");
+        //Debug.Log("OnPhotonSerializeView Called");Debug.Log("OnPhotonSerializeView Called");
         if (stream.IsWriting)
         {
             // We own this player: send the others our data

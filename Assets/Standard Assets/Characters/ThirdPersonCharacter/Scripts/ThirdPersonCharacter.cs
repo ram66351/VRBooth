@@ -1,12 +1,15 @@
 using UnityEngine;
+using Photon.Realtime;
+using Photon.Pun;
 
-namespace UnityStandardAssets.Characters.ThirdPerson
+//namespace UnityStandardAssets.Characters.ThirdPerson
+namespace Photon.Pun.Demo.PunBasics
 {
 	[RequireComponent(typeof(Rigidbody))]
 	[RequireComponent(typeof(CapsuleCollider))]
 	[RequireComponent(typeof(Animator))]
-	public class ThirdPersonCharacter : MonoBehaviour
-	{
+	public class ThirdPersonCharacter : MonoBehaviourPun
+    {
 		[SerializeField] float m_MovingTurnSpeed = 360;
 		[SerializeField] float m_StationaryTurnSpeed = 180;
 		[SerializeField] float m_JumpPower = 12f;
@@ -29,8 +32,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		CapsuleCollider m_Capsule;
 		bool m_Crouching;
 
-
-		void Start()
+        void Awake()
 		{
 			m_Animator = GetComponent<Animator>();
 			m_Rigidbody = GetComponent<Rigidbody>();
@@ -40,16 +42,26 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
 			m_Rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
 			m_OrigGroundCheckDistance = m_GroundCheckDistance;
-		}
+            
+        }
+
+
 
 
 		public void Move(Vector3 move, bool crouch, bool jump)
 		{
+            
 
-			// convert the world relative moveInput vector into a local-relative
-			// turn amount and forward amount required to head in the desired
-			// direction.
-			if (move.magnitude > 1f) move.Normalize();
+            // Prevent control is connected to Photon and represent the localPlayer
+            if (photonView.IsMine == false && PhotonNetwork.IsConnected == true)
+            {
+                return;
+            }
+
+            // convert the world relative moveInput vector into a local-relative
+            // turn amount and forward amount required to head in the desired
+            // direction.
+            if (move.magnitude > 1f) move.Normalize();
 			move = transform.InverseTransformDirection(move);
 			CheckGroundStatus();
 			move = Vector3.ProjectOnPlane(move, m_GroundNormal);
@@ -117,8 +129,10 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
 		void UpdateAnimator(Vector3 move)
 		{
-			// update the animator parameters
-			m_Animator.SetFloat("Forward", m_ForwardAmount, 0.1f, Time.deltaTime);
+           
+
+            // update the animator parameters
+            m_Animator.SetFloat("Forward", m_ForwardAmount, 0.1f, Time.deltaTime);
 			m_Animator.SetFloat("Turn", m_TurnAmount, 0.1f, Time.deltaTime);
 			m_Animator.SetBool("Crouch", m_Crouching);
 			m_Animator.SetBool("OnGround", m_IsGrounded);
@@ -218,7 +232,9 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			{
 				m_IsGrounded = false;
 				m_GroundNormal = Vector3.up;
-				m_Animator.applyRootMotion = false;
+
+                if (m_Animator != null)
+				    m_Animator.applyRootMotion = false;
 			}
 		}
 	}
